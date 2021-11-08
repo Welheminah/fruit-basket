@@ -26,11 +26,3 @@ module.exports = function fruitBasket(pool){
     }
 
 }
-
-SELECT
-	phone_number
-FROM
-	petrol_station
-INNER JOIN  cars
-    ON petrol_station.cars_id = petrol_station.petrol_id
-;
