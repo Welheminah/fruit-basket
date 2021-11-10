@@ -15,6 +15,8 @@ describe('The fruit basket function', function () {
     beforeEach(async function () {
         // clean the tables before each test run
         // await pool.query("delete from fruit_basket;");
+
+        
     });
 
     it('should find all the fruit baskets for a given fruit type', async function () {
