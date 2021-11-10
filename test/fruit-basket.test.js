@@ -20,12 +20,14 @@ describe('The fruit basket function', function () {
     it('should find all the fruit baskets for a given fruit type', async function () {
         const fruits = fruitBasket(pool);
 
-        await fruits.givenFruit();
-        let theFunction = await fruits.givenFruit()
-        console.log(await fruits.givenFruit())
+        await fruits.addFruit('Apples', 25, 40);
+        await fruits.addFruit('Oranges', 24, 45);
+        
+        let results = await fruits.getFruit();
 
-
-        assert.deepEqual([], theFunction)
+        console.log(results)
+       
+        assert.deepEqual([], results)
     
 
     });
@@ -33,24 +35,18 @@ describe('The fruit basket function', function () {
     it('should find all the fruit baskets for a given fruit type,', async function () {
         const fruits = fruitBasket(pool);
         
-        await fruits.findfFruit('Apple');
-        console.log(await fruits.findfFruit('Apple'))
-        let theFunction = await fruits.findfFruit()
+        
 
-      assert.deepEqual([], theFunction)
+      assert.deepEqual()
 
     });
 
     it('should update the number of fruits in a given basket', async function () {
         const fruits = fruitBasket(pool);
-        await fruits.updateFruit();
-        let now = await fruits.updateFruit()
-        console.log(now)
 
-        // let passed = now[2];
-        // console.log(passed)
+        
 
-        assert.deepEqual([], now)
+        assert.deepEqual()
 
     })
 

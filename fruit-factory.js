@@ -1,26 +1,33 @@
 module.exports = function fruitBasket(pool){
     
-    async function givenFruit(){
+    async function addFruit(fruit, quantity, price){
        
-      let theFruit = await pool.query("INSERT INTO fruit_basket (type_of_fruit, quantity, unit_price) VALUES ('Peaches', 20, 47)");
-      return theFruit.rows;
-    } 
+     var dbFruit = await pool.query("SELECT type_of_fruit FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
+
+     if(dbFruit === 0){
+         await pool.query("INSERT INTO fruit_basket(type_of_fruit, quantity, unit_price) VALUES($1, $2, $3)", [fruit, quantity, price])
+     }
+    }
+
+    async function getFruit(){
+        var gotFruit = await pool.query("SELECT * FROM fruit_basket")
+        return gotFruit.rows;
+    }
 
     async function findfFruit(fruit){
-        let find = await pool.query("SELECT * FROM fruit_basket WHERE type_of_fruit = $1", [fruit])
-        return find.rows;
+        
 
     }
     //update the number of fruits in a given basket
     async function updateFruit(){
-        let update = await pool.query("UPDATE fruit_basket SET quantity = 22 WHERE type_of_fruit = 'Bananas'")
-        return update.rows
+     
     }
 
     //
 
     return {
-        givenFruit,
+        addFruit,
+        getFruit,
         findfFruit,
         updateFruit
     }
