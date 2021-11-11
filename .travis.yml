@@ -4,7 +4,7 @@ node_js:
   - 12
 
 env: 
-  - 'DATABASE_URL=postgresql://codx:pg123@localhost:5432/fruit_basket'
+  - 'DATABASE_URL=postgresql://postgres@localhost:5432/fruit_basket'
 
 before_script:
   - npm install
