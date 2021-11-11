@@ -1,0 +1,20 @@
+language: node_js
+
+node_js:
+  - 12
+
+env: 
+  - 'DATABASE_URL=postgresql://codx:pg123@localhost:5432/fruit_basket'
+
+before_script:
+  - npm install
+  - psql -c 'create database  fruit_basket;' -U postgres
+  - psql -U postgres -d fruit_basket -a -f database.sql
+
+services:
+  - postgresql
+addons:
+  postgresql: '9.4'
+  apt:
+    packages:
+      - postgresql-server-dev-9.4
