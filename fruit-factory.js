@@ -1,4 +1,4 @@
-module.exports = function fruitBasket(pool) {
+module.exports = function FruitBasket(pool) {
 
     //create a new fruit basket for a given fruit type, qty & fruit price
     async function addFruit(fruit, quantity, price) {
@@ -7,9 +7,10 @@ module.exports = function fruitBasket(pool) {
 
         if (dbFruit.rows.length === 0) {
             await pool.query("INSERT INTO fruit_basket(type_of_fruit, quantity, unit_price) VALUES($1, $2, $3)", [fruit, quantity, price])
-        } else {
-            await pool.query('UPDATE fruit_basket SET quantity = quantity +1 WHERE type_of_fruit = $1', [fruit])
-        }
+        } 
+        // else {
+        //     await pool.query('UPDATE fruit_basket SET quantity = quantity +1 WHERE type_of_fruit = $1', [fruit])
+        // }
     }
 
     //getting the results
@@ -33,21 +34,9 @@ module.exports = function fruitBasket(pool) {
     async function showPrice(fruit) {
 
         var price = await pool.query("SELECT unit_price FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
-
-        var thePricing = {};
-        for (let i = 0; i < price.rows.length; i++) {
-            // thePricing["type_of_fruit"] = price.rows[i].unit_price;
-
-            thePricing.push(price.rows[i].unit_price);
-
-        }
-        return thePricing;
+         return price.rows;
+        
     }
-
-
-
-
-
 
 
 
