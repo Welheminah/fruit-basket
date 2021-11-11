@@ -14,7 +14,7 @@ describe('The fruit basket function', function () {
 
     beforeEach(async function () {
         // clean the tables before each test run
-        // await pool.query("delete from fruit_basket;");
+        await pool.query("delete from fruit_basket;");
 
         
     });
@@ -26,31 +26,48 @@ describe('The fruit basket function', function () {
         await fruits.addFruit('Oranges', 24, 45);
         
         let results = await fruits.getFruit();
+        let fruitResults = results[0].type_of_fruit;
+        let fruitResults2 = results[1].type_of_fruit;
+        
 
-        // console.log(results)
-       
-        assert.deepEqual([], results)
+        // console.log(fruitResults)
     
+       
+        assert.equal('Apples', fruitResults);
+        assert.equal('Oranges', fruitResults2);
+        
 
     });
 
-    it('should find all the fruit baskets for a given fruit type,', async function () {
+    it.skip('should find all the fruit baskets for a given fruit type,', async function () {
         const fruits = fruitBasket(pool);
         
-        
+        await fruits.addFruit('Oranges', 24, 45);
+        await fruits.addFruit('Apples', 25, 40);
 
-      assert.deepEqual()
+       let findingFruit =  await fruits.findfFruit('Apples');
+
+       console.log(findingFruit.type_of_fruit);
+
+      assert.equal('Apples', findingFruit.type_of_fruit);
 
     });
 
-    it('should update the number of fruits in a given basket', async function () {
+    it('should delete everything in the fruit_basket', async function () {
         const fruits = fruitBasket(pool);
 
+        await fruits.addFruit('Bananas', 24, 45);
+        await fruits.addFruit('Plums', 20, 50);
+
+        let clearingDB = await fruits.resetBasket()
+
+        assert.equal(0, clearingDB.rows.length)
         
-
-        assert.deepEqual()
-
     })
+
+    // it('should update the number of fruits in a given basket', async function () {
+        
+    // })
 
     // it('should show the total price for a given fruit basket', async function () {
 
