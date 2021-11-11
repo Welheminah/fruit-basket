@@ -6,7 +6,7 @@ const Pool = pg.Pool;
 const connectionString = process.env.DATABASE_URL || 'postgresql://codx:pg123@localhost:5432/fruit_basket';
 
 const pool = new Pool({
-    connectionString
+    connectionString : connectionString, ssl:{ rejectUnauthorized: false}
 });
 
 describe('The fruit basket function', function () {
@@ -27,7 +27,7 @@ describe('The fruit basket function', function () {
         
         let results = await fruits.getFruit();
 
-        console.log(results)
+        // console.log(results)
        
         assert.deepEqual([], results)
     
