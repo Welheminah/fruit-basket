@@ -8,9 +8,9 @@ module.exports = function FruitBasket(pool) {
         if (dbFruit.rows.length === 0) {
             await pool.query("INSERT INTO fruit_basket(type_of_fruit, quantity, unit_price) VALUES($1, $2, $3)", [fruit, quantity, price])
         } 
-        // else {
-        //     await pool.query('UPDATE fruit_basket SET quantity = quantity +1 WHERE type_of_fruit = $1', [fruit])
-        // }
+        else {
+            await pool.query('UPDATE fruit_basket SET quantity = quantity +4 WHERE type_of_fruit = $1', [fruit])
+        }
     }
 
     //getting the results
@@ -26,7 +26,9 @@ module.exports = function FruitBasket(pool) {
 
     }
     //update the number of fruits in a given basket
-    async function updateFruit() {
+    async function updateFruit(fruit) {
+       var updateFruitQuantity = await pool.query('UPDATE fruit_basket SET quantity = quantity +2 WHERE type_of_fruit = $1', [fruit]);
+       return updateFruitQuantity.rows;
         //Would if be possible to update as an else statement from the addFruit() 
     }
 
@@ -37,18 +39,17 @@ module.exports = function FruitBasket(pool) {
          return price.rows;
         
     }
-
-
-
+    
     //show the sum of the total of the fruit baskets for a given fruit type.
     async function showSum() {
-        var theSum = await pool.query("SELECT SUM(quantity) FROM fruit_basket")
+        var theSum = await pool.query("SELECT SUM(quantity* unit_price) AS total FROM fruit_basket")
         return theSum.rows;
     }
 
     async function resetBasket() {
-        var clear = await pool.query("DELETE FROM fruit");
+        var clear = await pool.query("DELETE FROM fruit_basket");
         return clear;
+      
     }
 
     return {

@@ -57,7 +57,7 @@ describe('The fruit basket function', function () {
 
     });
 
-    it.skip('should delete everything in the fruit_basket', async function () {
+    it('should delete everything in the fruit_basket table', async function () {
         const fruits = FruitBasket(pool);
 
         await fruits.addFruit('Bananas', 24, 5);
@@ -69,9 +69,20 @@ describe('The fruit basket function', function () {
         
     })
 
-    // it('should update the number of fruits in a given basket', async function () {
-        
-    // })
+    it('should update the number of fruits in a given basket', async function () {
+        const fruits = FruitBasket(pool);
+
+        await fruits.addFruit('Bananas', 24, 5);
+        await fruits.addFruit('Bananas', 24, 5);
+
+       let results = await fruits.getFruit();
+
+    //    console.log(results)
+       let updatedBasket = results[0].quantity;
+
+       assert.equal(28,updatedBasket )
+
+    })
 
     it('should show the total price for a given fruit basket', async function () {
         const fruits = FruitBasket(pool);
@@ -83,15 +94,25 @@ describe('The fruit basket function', function () {
 
         let results = thePriceOfFruit[0].unit_price;
 
-        console.log(results)
+        // console.log(results)
 
         assert.equal(5, results)
     })
 
-    // it('should show the sum of the total of the fruit baskets for a given fruit type', async function () {
+    it('should show the sum of the total of the fruit baskets for a given fruit type', async function () {
+        const fruits = FruitBasket(pool);
 
+        await fruits.addFruit('Bananas', 24, 5);
+        await fruits.addFruit('Plums', 20, 5);
+
+       let showingTheSum = await fruits.showSum('Plums')
+
+       let totalIs = showingTheSum[0].total;
+    //    console.log(totalIs);
+
+        assert.equal(220, totalIs)
        
-    // });
+    });
 
     after(function () {
         pool.end();
