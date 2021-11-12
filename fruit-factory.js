@@ -1,6 +1,6 @@
 module.exports = function FruitBasket(pool) {
 
-    //create a new fruit basket for a given fruit type, qty & fruit price
+   
     async function addFruit(fruit, quantity, price) {
 
         var dbFruit = await pool.query("SELECT * FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
@@ -8,31 +8,41 @@ module.exports = function FruitBasket(pool) {
         if (dbFruit.rows.length === 0) {
             await pool.query("INSERT INTO fruit_basket(type_of_fruit, quantity, unit_price) VALUES($1, $2, $3)", [fruit, quantity, price])
         } 
-        else {
-            await pool.query('UPDATE fruit_basket SET quantity = quantity +4 WHERE type_of_fruit = $1', [fruit])
-        }
+        
     }
 
-    //getting the results
+    
     async function getFruit() {
         var gotFruit = await pool.query("SELECT * FROM fruit_basket")
-        return gotFruit.rows;
+        const allFruitsAdded = [];
+
+        for (let i = 0; i < gotFruit.rows.length; i++ ){
+            const currentFruits = gotFruit.rows[i];
+            allFruitsAdded.push(currentFruits.type_of_fruit);
+        }
+        return allFruitsAdded;
+
     }
 
-    //find all the fruit baskets for a given fruit type
+    async function addedFruits(){
+        var theFruit = await pool.query("SELECT * FROM fruit_basket")
+        return theFruit.rows;
+    }
+
+   
     async function findfFruit(fruit) {
         var theFruit = await pool.query("SELECT type_of_fruit FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
         return theFruit.rows;
 
     }
-    //update the number of fruits in a given basket
-    async function updateFruit(fruit) {
-       var updateFruitQuantity = await pool.query('UPDATE fruit_basket SET quantity = quantity +2 WHERE type_of_fruit = $1', [fruit]);
+
+    async function updateFruit(fruit, quantity) {
+       var updateFruitQuantity = await pool.query('UPDATE fruit_basket SET quantity = quantity +4 WHERE type_of_fruit = $1', [fruit]);
        return updateFruitQuantity.rows;
-        //Would if be possible to update as an else statement from the addFruit() 
+     
     }
 
-    //show the total price for a given fruit basket
+  
     async function showPrice(fruit) {
 
         var price = await pool.query("SELECT unit_price FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
@@ -40,7 +50,6 @@ module.exports = function FruitBasket(pool) {
         
     }
     
-    //show the sum of the total of the fruit baskets for a given fruit type.
     async function showSum() {
         var theSum = await pool.query("SELECT SUM(quantity* unit_price) AS total FROM fruit_basket")
         return theSum.rows;
@@ -59,7 +68,8 @@ module.exports = function FruitBasket(pool) {
         updateFruit,
         showPrice,
         showSum,
-        resetBasket
+        resetBasket,
+        addedFruits
     }
 
 }

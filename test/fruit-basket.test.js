@@ -23,18 +23,11 @@ describe('The fruit basket function', function () {
 
         await fruits.addFruit('Apples', 25, 4);
         await fruits.addFruit('Oranges', 24, 5);
+        await fruits.addFruit('Pears', 30, 3);
+
         
         let results = await fruits.getFruit();
-        let fruitResults = results[0].type_of_fruit;
-        let fruitResults2 = results[1].type_of_fruit;
-        
-
-        // console.log(fruitResults)
-        // console.log(fruitResults2)
-    
-       
-        assert.equal('Apples', fruitResults);
-        assert.equal('Oranges', fruitResults2);
+        assert.deepEqual(['Apples', 'Oranges', 'Pears'], results)
         
 
     });
@@ -46,10 +39,6 @@ describe('The fruit basket function', function () {
         await fruits.addFruit('Apples', 25, 4);
 
        let findingFruit =  await fruits.findfFruit('Apples');
-
-    //    console.log(findingFruit[0].type_of_fruit);
-
-
       assert.equal('Apples', findingFruit[0].type_of_fruit);
 
 
@@ -74,12 +63,12 @@ describe('The fruit basket function', function () {
         await fruits.addFruit('Bananas', 24, 5);
         await fruits.addFruit('Bananas', 24, 5);
 
-       let results = await fruits.getFruit();
+       let results = await fruits.updateFruit('Bananas');
 
-    //    console.log(results)
-       let updatedBasket = results[0].quantity;
-
-       assert.equal(28,updatedBasket )
+    
+        let results2 = await fruits.addedFruits()
+        let updatedBasket = results2[0].quantity;
+       assert.equal(28,updatedBasket );
 
     })
 
