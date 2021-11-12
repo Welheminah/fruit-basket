@@ -5,8 +5,7 @@ const Pool = pg.Pool;
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://codx:pg123@localhost:5432/fruit_basket';
 
-const pool = new Pool({
-    connectionString : connectionString, ssl:{ rejectUnauthorized: false}
+const pool = new Pool({connectionString : connectionString, ssl:{ rejectUnauthorized: false}
 });
 
 describe('The fruit basket function', function () {
