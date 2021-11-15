@@ -2,12 +2,9 @@ module.exports = function FruitBasket(pool) {
 
    
     async function addFruit(fruit, quantity, price) {
-
-        var dbFruit = await pool.query("SELECT * FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
-
-        if (dbFruit.rows.length === 0) {
-            await pool.query("INSERT INTO fruit_basket(type_of_fruit, quantity, unit_price) VALUES($1, $2, $3)", [fruit, quantity, price])
-        } 
+  
+         await pool.query("INSERT INTO fruit_basket(type_of_fruit, quantity, unit_price) VALUES($1, $2, $3)", [fruit, quantity, price])
+        
         
     }
 
@@ -37,15 +34,18 @@ module.exports = function FruitBasket(pool) {
     }
 
     async function updateFruit(fruit, quantity) {
-       var updateFruitQuantity = await pool.query('UPDATE fruit_basket SET quantity = quantity +4 WHERE type_of_fruit = $1', [fruit]);
+       await pool.query(`UPDATE fruit_basket SET quantity = quantity + ${quantity} WHERE type_of_fruit = $1`, [fruit]);
+       var updateFruitQuantity = await pool.query("SELECT quantity FROM fruit_basket WHERE type_of_fruit = $1", [fruit])
+        
        return updateFruitQuantity.rows;
      
     }
 
   
-    async function showPrice(fruit) {
+    async function showPrice() {
 
-        var price = await pool.query("SELECT unit_price FROM fruit_basket WHERE type_of_fruit = $1", [fruit]);
+        var price = await pool.query("SELECT SUM(unit_price) FROM fruit_basket");
+        // console.log(price.rows);
          return price.rows;
         
     }
@@ -55,11 +55,6 @@ module.exports = function FruitBasket(pool) {
         return theSum.rows;
     }
 
-    async function resetBasket() {
-        var clear = await pool.query("DELETE FROM fruit_basket");
-        return clear;
-      
-    }
 
     return {
         addFruit,
@@ -68,7 +63,6 @@ module.exports = function FruitBasket(pool) {
         updateFruit,
         showPrice,
         showSum,
-        resetBasket,
         addedFruits
     }
 
