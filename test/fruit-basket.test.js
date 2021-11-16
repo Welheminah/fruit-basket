@@ -12,7 +12,6 @@ describe('The fruit basket function', function () {
 
 
     beforeEach(async function () {
-        // clean the tables before each test run
         await pool.query("delete from fruit_basket;");
  
     });
@@ -25,7 +24,11 @@ describe('The fruit basket function', function () {
         await fruits.addFruit('Pears', 30, 3);
 
         let results = await fruits.getFruit();
-        assert.deepEqual(['Apples', 'Oranges', 'Pears'], results)      
+    
+        assert.deepEqual([ { type_of_fruit: 'Apples', quantity: 25, unit_price: 4 }, 
+        { type_of_fruit: 'Oranges', quantity: 24, unit_price: 5 },
+        { type_of_fruit: 'Pears', quantity: 30, unit_price: 3 } ],
+        results);
     });
 
     it('should find all the fruit baskets for a given fruit type,', async function () {
@@ -45,7 +48,9 @@ describe('The fruit basket function', function () {
 
         await fruits.addFruit('Bananas', 24, 5);
 
-       let results = await fruits.updateFruit('Bananas', 5);
+        await fruits.updateFruit('Bananas', 5);
+
+        let results = await fruits.getFruit();
     
         let updatedBasket = results[0].quantity;
        assert.equal(29,updatedBasket );
